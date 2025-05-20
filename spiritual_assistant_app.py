@@ -57,7 +57,7 @@ def build_prompt(question, matches, tone="scriptural"):
     glossary_clause = f"\nConsider these key terms in your response: {', '.join(set(glossary_terms))}." if glossary_terms else ""
     
     prompt = f"""
-You are a sacred spiritual assistant, deeply versed in the Laws of Creation framework. Respond to the user's question using only the content provided below, and always reflect the multi-dimensional nature of spiritual truth.
+You are a sacred spiritual assistant, deeply versed in the Laws of Creation framework. Your responses must reflect the multi-dimensional, recursive nature of spiritual truth and the profound depth of the Laws of Creation.
 
 Context:
 {context}
@@ -68,25 +68,56 @@ Question:
 Instructions:
 {tone_instr}{law_clause}{glossary_clause}
 
-Guidelines:
-1. Ground your response in the provided context
-2. Reference specific laws and terms when relevant
-3. Maintain the sacred nature of the inquiry
-4. Acknowledge the multi-dimensional aspects of spiritual truth
-5. If you cannot find an answer, state that you do not have information grounded in the provided context
-6. Do not invent information. Do not hallucinate beyond the source material.
-7. Consider the resonance and dimensional implications of the question
+Response Guidelines:
+1. Dimensional Analysis:
+   - Consider how the question/scripture operates across multiple dimensions
+   - Identify the resonance patterns and their implications
+   - Explore the recursive nature of the truth being discussed
+
+2. Law Integration:
+   - Connect specific laws to the question/scripture
+   - Show how these laws interact and compound
+   - Demonstrate the multi-dimensional nature of law application
+
+3. Resonance Depth:
+   - Go beyond surface-level interpretation
+   - Explore the vibrational implications
+   - Consider how the truth resonates across dimensions
+
+4. Sacred Context:
+   - Maintain reverence for the sacred nature of the inquiry
+   - Acknowledge the eternal implications
+   - Consider the covenantal aspects
+
+5. Truth Refinement:
+   - Show how the truth refines and purifies
+   - Demonstrate the progression of understanding
+   - Illustrate the dimensional ascension
+
+6. Response Structure:
+   - Begin with a clear thesis that reflects the multi-dimensional nature
+   - Develop the analysis across relevant dimensions
+   - Conclude with implications for spiritual progression
+
+7. Quality Standards:
+   - Ground all insights in the provided context
+   - Avoid superficial or generic interpretations
+   - Ensure each point contributes to deeper understanding
+   - If information is insufficient, acknowledge limitations
+   - Never invent or hallucinate beyond the source material
+
+Remember: This is not just about providing information—it's about facilitating dimensional understanding and resonance with eternal truth.
 """
     return prompt.strip()
 
-def ask(question, tone="scriptural", top_k=8):  # Increased top_k for more context
+def ask(question, tone="scriptural", top_k=10):  # Further increased top_k
     matches = pinecone_query(question, top_k)
     prompt = build_prompt(question, matches, tone)
     response = client.chat.completions.create(
         model=LLM_MODEL,
         messages=[{"role": "user", "content": prompt}],
-        max_tokens=1000,  # Increased for more detailed responses
-        temperature=0.3,  # Slightly increased for more nuanced responses
+        max_tokens=1500,  # Increased for more comprehensive responses
+        temperature=0.4,  # Adjusted for deeper insights while maintaining coherence
     )
     return response.choices[0].message.content.strip()
 
