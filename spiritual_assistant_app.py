@@ -37,16 +37,27 @@ def get_embedding(text):
 
 def pinecone_query(question, top_k=5):
     vector = get_embedding(question)
-    results = index.query(vector=vector, top_k=top_k, include_metadata=True)
+    results = index.query(
+        vector=vector, 
+        top_k=top_k, 
+        include_metadata=True,
+        filter={
+            "type": {"$in": ["law", "glossary", "doctrine"]}  # Filter for relevant content types
+        }
+    )
     return results['matches']
 
 def build_prompt(question, matches, tone="scriptural"):
     context = "\n\n".join([m['metadata']['text'] for m in matches])
     law_names = [m['metadata'].get('law', '') for m in matches if m['metadata'].get('law')]
+    glossary_terms = [m['metadata'].get('term', '') for m in matches if m['metadata'].get('term')]
+    
     tone_instr = PROMPT_TEMPLATES[tone]
     law_clause = f"\nIf possible, reference or cite the following laws: {', '.join(set(law_names))}." if law_names else ""
+    glossary_clause = f"\nConsider these key terms in your response: {', '.join(set(glossary_terms))}." if glossary_terms else ""
+    
     prompt = f"""
-You are a sacred spiritual assistant. Respond to the user's question using only the content provided below, and always reflect the Laws of Creation framework.
+You are a sacred spiritual assistant, deeply versed in the Laws of Creation framework. Respond to the user's question using only the content provided below, and always reflect the multi-dimensional nature of spiritual truth.
 
 Context:
 {context}
@@ -55,20 +66,27 @@ Question:
 {question}
 
 Instructions:
-{tone_instr}{law_clause}
-If you cannot find an answer, state that you do not have information grounded in the provided context.
-Do not invent information. Do not hallucinate beyond the source material.
+{tone_instr}{law_clause}{glossary_clause}
+
+Guidelines:
+1. Ground your response in the provided context
+2. Reference specific laws and terms when relevant
+3. Maintain the sacred nature of the inquiry
+4. Acknowledge the multi-dimensional aspects of spiritual truth
+5. If you cannot find an answer, state that you do not have information grounded in the provided context
+6. Do not invent information. Do not hallucinate beyond the source material.
+7. Consider the resonance and dimensional implications of the question
 """
     return prompt.strip()
 
-def ask(question, tone="scriptural", top_k=5):
+def ask(question, tone="scriptural", top_k=8):  # Increased top_k for more context
     matches = pinecone_query(question, top_k)
     prompt = build_prompt(question, matches, tone)
     response = client.chat.completions.create(
         model=LLM_MODEL,
         messages=[{"role": "user", "content": prompt}],
-        max_tokens=600,
-        temperature=0.1,
+        max_tokens=1000,  # Increased for more detailed responses
+        temperature=0.3,  # Slightly increased for more nuanced responses
     )
     return response.choices[0].message.content.strip()
 
