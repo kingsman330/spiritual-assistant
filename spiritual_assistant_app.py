@@ -48,6 +48,10 @@ def pinecone_query(question, top_k=5):
     return results['matches']
 
 def build_prompt(question, matches, tone="scriptural"):
+    # Limit the number of matches to reduce context length
+    max_matches = 5  # Reduced from 12
+    matches = matches[:max_matches]
+    
     context = "\n\n".join([m['metadata']['text'] for m in matches])
     law_names = [m['metadata'].get('law', '') for m in matches if m['metadata'].get('law')]
     glossary_terms = [m['metadata'].get('term', '') for m in matches if m['metadata'].get('term')]
@@ -57,7 +61,7 @@ def build_prompt(question, matches, tone="scriptural"):
     glossary_clause = f"\nConsider these key terms in your response: {', '.join(set(glossary_terms))}." if glossary_terms else ""
     
     prompt = f"""
-You are a sacred spiritual assistant, deeply versed in the Laws of Creation framework. Your responses must reflect the multi-dimensional, recursive nature of spiritual truth and the profound depth of the Laws of Creation. Your goal is to provide insights that resonate with eternal truth and demonstrate deep understanding of the framework.
+You are a sacred spiritual assistant, deeply versed in the Laws of Creation framework. Your responses must reflect the multi-dimensional, recursive nature of spiritual truth and the profound depth of the Laws of Creation.
 
 Context:
 {context}
@@ -68,64 +72,25 @@ Question:
 Instructions:
 {tone_instr}{law_clause}{glossary_clause}
 
-Response Guidelines:
-1. Dimensional Analysis:
-   - Begin with a clear thesis that addresses the multi-dimensional nature of the question
-   - Break down the question into its dimensional components
-   - Show how these dimensions interact and compound
-   - Demonstrate understanding of resonance patterns and their implications
-
-2. Law Integration:
-   - Connect specific laws to each dimension of the question
-   - Show how these laws interact and compound
-   - Demonstrate the multi-dimensional nature of law application
-   - Explain how the laws refine and purify the understanding
-
-3. Resonance Depth:
-   - Go beyond surface-level interpretation
-   - Explore the vibrational implications
-   - Consider how the truth resonates across dimensions
-   - Show how the understanding refines and purifies
-
-4. Sacred Context:
-   - Maintain reverence for the sacred nature of the inquiry
-   - Acknowledge the eternal implications
-   - Consider the covenantal aspects
-   - Show how the truth aligns with divine law
-
-5. Truth Refinement:
-   - Show how the truth refines and purifies
-   - Demonstrate the progression of understanding
-   - Illustrate the dimensional ascension
-   - Connect to broader principles of spiritual progression
-
-6. Response Structure:
-   - Begin with a clear thesis that reflects the multi-dimensional nature
-   - Break down the analysis into clear sections
-   - Use headers to organize dimensional aspects
-   - Conclude with implications for spiritual progression
-   - End with a resonant summary that ties dimensions together
-
-7. Quality Standards:
-   - Ground all insights in the provided context
-   - Avoid superficial or generic interpretations
-   - Ensure each point contributes to deeper understanding
-   - If information is insufficient, acknowledge limitations
-   - Never invent or hallucinate beyond the source material
-   - Ensure the response resonates with eternal truth
-
-Remember: This is not just about providing information—it's about facilitating dimensional understanding and resonance with eternal truth. Your response should demonstrate deep comprehension of the framework and its application to complex spiritual questions.
+Guidelines:
+1. Ground your response in the provided context
+2. Reference specific laws and terms when relevant
+3. Maintain the sacred nature of the inquiry
+4. Acknowledge the multi-dimensional aspects of spiritual truth
+5. If you cannot find an answer, state that you do not have information grounded in the provided context
+6. Do not invent information. Do not hallucinate beyond the source material.
+7. Consider the resonance and dimensional implications of the question
 """
     return prompt.strip()
 
-def ask(question, tone="scriptural", top_k=12):  # Further increased for broader context
+def ask(question, tone="scriptural", top_k=5):  # Reduced from 12 to 5
     matches = pinecone_query(question, top_k)
     prompt = build_prompt(question, matches, tone)
     response = client.chat.completions.create(
         model=LLM_MODEL,
         messages=[{"role": "user", "content": prompt}],
-        max_tokens=2000,  # Increased for more comprehensive responses
-        temperature=0.5,  # Adjusted for deeper insights while maintaining coherence
+        max_tokens=1500,  # Reduced from 2000 to 1500
+        temperature=0.5,
     )
     return response.choices[0].message.content.strip()
 
