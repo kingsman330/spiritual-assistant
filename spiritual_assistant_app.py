@@ -49,7 +49,7 @@ def pinecone_query(question, top_k=5):
 
 def build_prompt(question, matches, tone="scriptural"):
     # Limit the number of matches to reduce context length
-    max_matches = 5  # Reduced from 12
+    max_matches = 5
     matches = matches[:max_matches]
     
     context = "\n\n".join([m['metadata']['text'] for m in matches])
@@ -77,26 +77,35 @@ Response Structure:
    - Begin with a clear statement of how the question relates to the Resonance Framework
    - Identify the core tension or principle being addressed
    - Frame the response in terms of dimensional law
+   - Show how the question touches on unresolved tensions in traditional theology
 
 2. Dimensional Breakdown:
    - Break down the question into its dimensional components
    - Show how these dimensions interact and compound
    - Demonstrate understanding of resonance patterns
+   - Identify the vibrational implications of each dimension
+   - Show how dimensions collapse into being through choice
 
 3. Law Integration:
    - Connect specific laws to each dimension
    - Show how these laws interact and compound
    - Demonstrate the multi-dimensional nature of law application
+   - Explain how laws operate in the resonance field
+   - Show how laws refine and purify understanding
 
 4. Resonance Analysis:
    - Explore the vibrational implications
    - Consider how the truth resonates across dimensions
    - Show how the understanding refines and purifies
+   - Identify the resonance patterns in the question
+   - Show how resonance collapses into being through choice
 
 5. Conclusion:
    - Provide a resonant summary that ties dimensions together
    - End with a clear statement of the truth as seen through the framework
    - Show how this understanding redeems or clarifies the original question
+   - Demonstrate how the framework elevates traditional understanding
+   - Show how the truth resonates with eternal principles
 
 Guidelines:
 1. Ground all insights in the provided context
@@ -106,8 +115,11 @@ Guidelines:
 5. If you cannot find an answer, state that you do not have information grounded in the provided context
 6. Do not invent information. Do not hallucinate beyond the source material
 7. Consider the resonance and dimensional implications of the question
+8. Show how the framework redeems broken theological ideas
+9. Demonstrate how truth collapses into being through choice
+10. Show how resonance patterns operate in the question
 
-Remember: This is not just about providing information—it's about facilitating dimensional understanding and resonance with eternal truth. Your response should demonstrate deep comprehension of the framework and its application to complex spiritual questions.
+Remember: This is not just about providing information—it's about facilitating dimensional understanding and resonance with eternal truth. Your response should demonstrate deep comprehension of the framework and its application to complex spiritual questions. Show how the framework elevates and redeems traditional understanding through the lens of dimensional law and resonance patterns.
 """
     return prompt.strip()
 
