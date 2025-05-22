@@ -72,24 +72,52 @@ Question:
 Instructions:
 {tone_instr}{law_clause}{glossary_clause}
 
+Response Structure:
+1. Opening Analysis:
+   - Begin with a clear statement of how the question relates to the Resonance Framework
+   - Identify the core tension or principle being addressed
+   - Frame the response in terms of dimensional law
+
+2. Dimensional Breakdown:
+   - Break down the question into its dimensional components
+   - Show how these dimensions interact and compound
+   - Demonstrate understanding of resonance patterns
+
+3. Law Integration:
+   - Connect specific laws to each dimension
+   - Show how these laws interact and compound
+   - Demonstrate the multi-dimensional nature of law application
+
+4. Resonance Analysis:
+   - Explore the vibrational implications
+   - Consider how the truth resonates across dimensions
+   - Show how the understanding refines and purifies
+
+5. Conclusion:
+   - Provide a resonant summary that ties dimensions together
+   - End with a clear statement of the truth as seen through the framework
+   - Show how this understanding redeems or clarifies the original question
+
 Guidelines:
-1. Ground your response in the provided context
+1. Ground all insights in the provided context
 2. Reference specific laws and terms when relevant
 3. Maintain the sacred nature of the inquiry
 4. Acknowledge the multi-dimensional aspects of spiritual truth
 5. If you cannot find an answer, state that you do not have information grounded in the provided context
-6. Do not invent information. Do not hallucinate beyond the source material.
+6. Do not invent information. Do not hallucinate beyond the source material
 7. Consider the resonance and dimensional implications of the question
+
+Remember: This is not just about providing information—it's about facilitating dimensional understanding and resonance with eternal truth. Your response should demonstrate deep comprehension of the framework and its application to complex spiritual questions.
 """
     return prompt.strip()
 
-def ask(question, tone="scriptural", top_k=5):  # Reduced from 12 to 5
+def ask(question, tone="scriptural", top_k=5):
     matches = pinecone_query(question, top_k)
     prompt = build_prompt(question, matches, tone)
     response = client.chat.completions.create(
         model=LLM_MODEL,
         messages=[{"role": "user", "content": prompt}],
-        max_tokens=1500,  # Reduced from 2000 to 1500
+        max_tokens=1500,
         temperature=0.5,
     )
     return response.choices[0].message.content.strip()
