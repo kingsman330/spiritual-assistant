@@ -101,11 +101,67 @@ def validate_sacred_input(text):
 # --- Streamlit UI ---
 st.set_page_config(page_title="Spiritual Assistant", layout="centered")
 
+# Custom CSS for better formatting
+st.markdown("""
+<style>
+    .stTextArea textarea {
+        font-size: 16px;
+    }
+    .response-box {
+        background-color: #f0f2f6;
+        padding: 20px;
+        border-radius: 10px;
+        margin: 10px 0;
+    }
+    .user-question {
+        font-weight: 500;
+        color: #1f1f1f;
+        margin-bottom: 10px;
+    }
+    .assistant-response {
+        color: #1f1f1f;
+        line-height: 1.6;
+    }
+    .resonance-section {
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid #e0e0e0;
+    }
+</style>
+""", unsafe_allow_html=True)
+
 # For session logging
 if "session_log" not in st.session_state:
     st.session_state.session_log = []
 
-question = st.text_area("What is your spiritual question?", height=80)
+# Main chat interface
+st.title("Spiritual Assistant")
+st.markdown("_A sacred space for spiritual inquiry and growth_")
+
+# Chat history display
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = []
+
+# Display chat history
+for message in st.session_state.chat_history:
+    if message["role"] == "user":
+        st.markdown(f"""
+        <div class="user-question">
+            <strong>You:</strong><br>
+            {message["content"]}
+        </div>
+        """, unsafe_allow_html=True)
+    else:
+        st.markdown(f"""
+        <div class="response-box">
+            <div class="assistant-response">
+                {message["content"]}
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+# Input area
+question = st.text_area("What is your spiritual question?", height=80, key="question_input")
 tone = st.selectbox(
     "Choose a response tone:",
     list(PROMPT_TEMPLATES.keys()),
@@ -120,35 +176,31 @@ if st.button("Ask the Assistant"):
         if not is_valid:
             st.warning(message)
         else:
+            # Add user question to chat history
+            st.session_state.chat_history.append({
+                "role": "user",
+                "content": question
+            })
+            
             with st.spinner("Reflecting..."):
                 answer = ask(question, tone)
-            st.markdown("**Assistant's Response:**")
-            st.success(answer)
-
-            # Resonance rating
-            st.markdown("How resonant was this answer?")
-            resonance = st.radio(
-                "Resonance rating",
-                ["👍 Highly Resonant", "👌 Useful", "😐 Neutral", "👎 Not Resonant"],
-                horizontal=True,
-                key=f"resonance_{len(st.session_state.session_log)}"
-            )
-
-            # Log session entry
-            session_entry = {
-                "timestamp": datetime.utcnow().isoformat(),
-                "question": question,
-                "tone": tone,
-                "answer": answer,
-                "resonance": resonance
-            }
-            st.session_state.session_log.append(session_entry)
-    else:
-        st.warning("Please enter a question for the assistant.")
+            
+            # Add assistant response to chat history
+            st.session_state.chat_history.append({
+                "role": "assistant",
+                "content": answer
+            })
+            
+            # Clear the input
+            st.session_state.question_input = ""
+            
+            # Force a rerun to update the display
+            st.experimental_rerun()
 
 # Session export
 if st.session_state.session_log:
-    if st.button("Export Session (.txt)"):
+    st.markdown("---")
+    if st.button("Export Session"):
         lines = []
         for entry in st.session_state.session_log:
             lines.append(f"Time: {entry['timestamp']}")
