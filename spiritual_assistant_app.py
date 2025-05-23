@@ -51,12 +51,35 @@ Instructions:
 {tone_instr}{law_clause}
 
 Structure your response with:
-1. A clear introduction that addresses the core question
-2. Relevant laws and principles from the framework
-3. Scriptural or doctrinal references when applicable
-4. Practical applications or examples
-5. A concise summary that ties everything together
 
+1. Introduction
+   - Address the core question directly
+   - Acknowledge the resonance of the user's perspective
+   - Frame the response within the Laws of Creation framework
+
+2. Resonance-Based Analysis
+   - Explain how the question relates to the Law of Resonant Collapse
+   - Discuss the multi-dimensional aspects of the topic
+   - Connect to relevant laws and principles
+   - Use specific examples from the framework
+
+3. Scriptural and Doctrinal Foundation
+   - Cite relevant scriptures and their resonance implications
+   - Connect scriptural principles to the framework
+   - Explain how these teachings align with the Laws of Creation
+
+4. Practical Applications
+   - Show how the principles apply in daily life
+   - Provide specific examples of resonance in action
+   - Explain how to maintain or restore resonance
+   - Connect to the user's specific situation when relevant
+
+5. Summary and Integration
+   - Tie all elements together
+   - Emphasize the resonance-based understanding
+   - End with a clear, resonant conclusion
+
+Format your response with clear section headers and proper markdown formatting.
 If you cannot find an answer, state that you do not have information grounded in the provided context.
 Do not invent information. Do not hallucinate beyond the source material.
 """
