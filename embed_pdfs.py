@@ -7,9 +7,6 @@ from pinecone import Pinecone
 from openai import OpenAI
 import unicodedata
 import string
-from datetime import datetime
-import time
-from tenacity import retry, stop_after_attempt, wait_exponential
 
 # Load environment variables
 load_dotenv()
@@ -19,11 +16,8 @@ pc = Pinecone(api_key=os.getenv("PINECONE_API_KEY"))
 index = pc.Index(os.getenv("PINECONE_INDEX"))
 pdf_folder = os.getenv("PDF_FOLDER", "./pdfs")
 
-# Constants
 EMBED_MODEL = "text-embedding-ada-002"
-CHUNK_SIZE = 500  # Reduced from 1000 to 500 tokens
-OVERLAP = 100     # Reduced from 200 to 100 tokens
-MAX_TOKENS = 8000 # Maximum tokens for the model
+CHUNK_SIZE = 300
 
 PDF_TAGS = {
     "Aetheral Expansion Thoughts and Discovery collection 1": {
@@ -74,7 +68,7 @@ PDF_TAGS = {
         "tone": "personal",
         "dimension": "celestial"
     },
-    "Wow girl I really don't know where to start -": {
+    "Wow girl I really don’t know where to start -": {
         "type": "dialogue",
         "tone": "conversational",
         "dimension": "emotional"
@@ -115,39 +109,12 @@ def clean_text(raw_text):
     cleaned = cleaned.strip()
     return cleaned
 
-def count_tokens(text):
-    """Count the number of tokens in a text string."""
-    encoding = tiktoken.encoding_for_model("gpt-4")
-    return len(encoding.encode(text))
-
-def chunk_text(text, chunk_size=CHUNK_SIZE, overlap=OVERLAP):
-    """Split text into overlapping chunks of approximately chunk_size tokens."""
-    encoding = tiktoken.encoding_for_model("gpt-4")
-    tokens = encoding.encode(text)
-    chunks = []
-    
-    i = 0
-    while i < len(tokens):
-        # Get chunk of tokens
-        chunk_tokens = tokens[i:i + chunk_size]
-        chunk_text = encoding.decode(chunk_tokens)
-        
-        # Verify token count
-        token_count = len(chunk_tokens)
-        if token_count > MAX_TOKENS:
-            print(f"Warning: Chunk exceeds maximum token limit ({token_count} > {MAX_TOKENS})")
-            # If chunk is too large, try to split at a sentence boundary
-            sentences = chunk_text.split('. ')
-            reduced_chunk = '. '.join(sentences[:len(sentences)//2])
-            chunk_text = reduced_chunk
-            token_count = count_tokens(chunk_text)
-        
-        chunks.append(chunk_text)
-        
-        # Move forward, accounting for overlap
-        i += (chunk_size - overlap)
-    
-    return chunks
+def chunk_text(text, chunk_size=CHUNK_SIZE):
+    enc = tiktoken.get_encoding("cl100k_base")
+    tokens = enc.encode(text)
+    chunks = [tokens[i:i+chunk_size] for i in range(0, len(tokens), chunk_size)]
+    decoded_chunks = [enc.decode(chunk) for chunk in chunks]
+    return decoded_chunks
 
 def get_tag_from_filename(filename):
     for base_name, tags in PDF_TAGS.items():
@@ -155,148 +122,51 @@ def get_tag_from_filename(filename):
             return tags
     return {"source": filename}
 
-def extract_text_from_pdf(pdf_path):
-    """Extract text from a PDF file."""
-    with open(pdf_path, 'rb') as file:
-        reader = PdfReader(file)
-        text = ""
+def process_pdf(pdf_path, filename):
+    try:
+        reader = PdfReader(pdf_path)
+        full_text = ""
         for page in reader.pages:
-            text += page.extract_text() + "\n"
-    return text
-
-def get_embedding(text):
-    """Get embedding for a text string."""
-    response = client.embeddings.create(
-        model=EMBED_MODEL,
-        input=text
-    )
-    return response.data[0].embedding
-
-@retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=4, max=10))
-def upsert_to_pinecone(vectors):
-    """Upload vectors to Pinecone with retry logic."""
-    try:
-        index.upsert(vectors=vectors)
+            text = page.extract_text()
+            if text:
+                full_text += "\n" + text
+        return full_text.strip()
     except Exception as e:
-        print(f"Error uploading to Pinecone: {str(e)}")
-        raise
+        print(f"Error reading {filename}: {e}")
+        return ""
 
-def process_pdf(pdf_path, metadata=None):
-    """Process a PDF file and upload its chunks to Pinecone."""
-    try:
-        # Extract text from PDF
-        text = extract_text_from_pdf(pdf_path)
-        if not text.strip():
-            print(f"Warning: No text extracted from {pdf_path}")
-            return
-        
-        # Clean the text
-        text = clean_text(text)
-        
-        # Split into chunks
-        chunks = chunk_text(text)
-        if not chunks:
-            print(f"Warning: No chunks created from {pdf_path}")
-            return
-        
-        print(f"Created {len(chunks)} chunks from {pdf_path}")
-        
-        # Prepare metadata
-        base_metadata = {
-            "source": os.path.basename(pdf_path),
-            "type": "doctrine",  # or "law" or "glossary" based on content
-            "timestamp": datetime.utcnow().isoformat(),
-        }
-        if metadata:
-            base_metadata.update(metadata)
-        
-        # Process chunks in smaller batches
-        batch_size = 25  # Reduced from 50 to 25
-        vectors_batch = []
-        
-        for i, chunk in enumerate(chunks):
-            try:
-                # Verify token count before embedding
-                token_count = count_tokens(chunk)
-                if token_count > MAX_TOKENS:
-                    print(f"Warning: Chunk {i} exceeds maximum token limit ({token_count} > {MAX_TOKENS})")
-                    continue
-                
-                # Get embedding
-                embedding = get_embedding(chunk)
-                
-                # Prepare chunk metadata
-                chunk_metadata = base_metadata.copy()
-                chunk_metadata.update({
-                    "chunk_index": i,
-                    "text": chunk,
-                    "token_count": token_count
-                })
-                
-                # Add to batch
-                vectors_batch.append({
-                    "id": f"{to_ascii_id(os.path.basename(pdf_path))}-{i}",
-                    "values": embedding,
-                    "metadata": chunk_metadata
-                })
-                
-                # Upload batch if it reaches batch_size
-                if len(vectors_batch) >= batch_size:
-                    upsert_to_pinecone(vectors_batch)
-                    print(f"Uploaded batch of {len(vectors_batch)} chunks from {os.path.basename(pdf_path)}")
-                    vectors_batch = []
-                    time.sleep(1)  # Add delay between batches
-                
-            except Exception as e:
-                print(f"Error processing chunk {i} from {pdf_path}: {str(e)}")
-                continue
-        
-        # Upload remaining vectors
-        if vectors_batch:
-            upsert_to_pinecone(vectors_batch)
-            print(f"Uploaded final batch of {len(vectors_batch)} chunks from {os.path.basename(pdf_path)}")
-        
-        print(f"Completed processing {pdf_path}")
-        
-    except Exception as e:
-        print(f"Error processing {pdf_path}: {str(e)}")
-
-def process_directory(directory_path, metadata=None):
-    """Process all PDFs in a directory."""
-    if not os.path.exists(directory_path):
-        print(f"Directory not found: {directory_path}")
-        return
-    
-    pdf_files = [f for f in os.listdir(directory_path) if f.endswith(".pdf")]
-    if not pdf_files:
-        print(f"No PDF files found in {directory_path}")
-        return
-    
-    print(f"Found {len(pdf_files)} PDF files to process")
-    
-    for filename in pdf_files:
-        pdf_path = os.path.join(directory_path, filename)
-        print(f"\nProcessing {filename}...")
-        process_pdf(pdf_path, metadata)
-        time.sleep(2)  # Add delay between files
+def embed_and_upsert(filename, text):
+    tags = get_tag_from_filename(filename)
+    chunks = chunk_text(text)
+    for i, chunk in enumerate(chunks):
+        try:
+            response = client.embeddings.create(model=EMBED_MODEL, input=chunk)
+            vector = response.data[0].embedding
+            meta = dict(tags)
+            meta.update({
+                "source_file": filename,
+                "chunk_index": i,
+                "text": chunk
+            })
+            vector_id = f"{to_ascii_id(filename)}_{i}"
+            index.upsert([{
+                "id": vector_id,
+                "values": vector,
+                "metadata": meta
+            }])
+            print(f"Uploaded: {vector_id}")
+        except Exception as e:
+            print(f"Error embedding/uploading chunk {i} of {filename}: {e}")
 
 def main():
-    # Example usage
-    pdf_directory = os.getenv("PDF_FOLDER", "pdfs")
-    
-    # Create directory if it doesn't exist
-    if not os.path.exists(pdf_directory):
-        os.makedirs(pdf_directory)
-        print(f"Created directory: {pdf_directory}")
-        print("Please add your PDF files to this directory and run the script again.")
-        return
-    
-    try:
-        # Process all PDFs in the directory
-        process_directory(pdf_directory)
-        print("\nProcessing complete!")
-    except Exception as e:
-        print(f"Error in main process: {str(e)}")
+    for filename in os.listdir(pdf_folder):
+        if filename.endswith(".pdf"):
+            pdf_path = os.path.join(pdf_folder, filename)
+            print(f"Processing {filename}...")
+            text = process_pdf(pdf_path, filename.replace(".pdf", ""))
+            if text:
+                cleaned_text = clean_text(text)
+                embed_and_upsert(filename.replace(".pdf", ""), cleaned_text)
 
 if __name__ == "__main__":
     main()

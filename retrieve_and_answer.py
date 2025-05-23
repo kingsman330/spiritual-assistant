@@ -26,7 +26,7 @@ def get_embedding(text):
     resp = client.embeddings.create(model=EMBED_MODEL, input=text)
     return resp.data[0].embedding
 
-def pinecone_query(question, top_k=5):
+def pinecone_query(question, top_k=10):
     vector = get_embedding(question)
     results = index.query(vector=vector, top_k=top_k, include_metadata=True)
     return results['matches']
@@ -52,7 +52,7 @@ Do not invent information. Do not hallucinate beyond the source material.
 """
     return prompt.strip()
 
-def ask(question, tone="scriptural", top_k=5):
+def ask(question, tone="scriptural", top_k=10):
     matches = pinecone_query(question, top_k)
     prompt = build_prompt(question, matches, tone)
     response = client.chat.completions.create(
