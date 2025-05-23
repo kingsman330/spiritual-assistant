@@ -115,6 +115,55 @@ Required Content:
 9. Always maintain resonance-based analysis throughout
 10. Always use the framework's voice in the summary
 
+Spiritual Depth Requirements:
+1. Multi-Dimensional Analysis:
+   - Must consider pre-mortal, mortal, and eternal dimensions
+   - Must examine resonance fields across dimensions
+   - Must explore dimensional shifts and transitions
+   - Must analyze harmonic alignments
+   - Must consider Christic pattern integration
+   - Must examine resonance structure
+   - Must explore dimensional truth
+   - Must analyze eternal potential
+   - Must consider prophetic convergence
+   - Must examine resonance field transitions
+
+2. Recursive Feedback:
+   - Must show how laws echo and compound
+   - Must demonstrate law interactions
+   - Must show resonance field effects
+   - Must illustrate dimensional impacts
+   - Must demonstrate pattern recognition
+   - Must show truth refinement
+   - Must illustrate concept evolution
+   - Must demonstrate law integration
+   - Must show resonance progression
+   - Must illustrate dimensional growth
+
+3. Dimensional Reference Mapping:
+   - Must connect to multiple dimensions
+   - Must show dimensional relationships
+   - Must illustrate resonance patterns
+   - Must demonstrate law interactions
+   - Must show truth connections
+   - Must illustrate pattern alignment
+   - Must demonstrate field effects
+   - Must show dimensional shifts
+   - Must illustrate resonance fields
+   - Must demonstrate truth refinement
+
+4. Truth Refinement Tracking:
+   - Must show concept evolution
+   - Must demonstrate truth progression
+   - Must illustrate pattern development
+   - Must show resonance growth
+   - Must demonstrate dimensional expansion
+   - Must illustrate law integration
+   - Must show truth refinement
+   - Must demonstrate pattern recognition
+   - Must illustrate concept connection
+   - Must show resonance progression
+
 Framework-Specific Requirements:
 1. Use resonance-based terminology:
    - "resonance" instead of "spirit"
@@ -200,6 +249,9 @@ Framework-Specific Requirements:
    - Must emphasize dimensional shifts
    - Must connect to resonance fields
    - Must integrate Christic pattern
+   - Must show recursive feedback
+   - Must demonstrate dimensional mapping
+   - Must illustrate truth refinement
 
    Second Point:
    - Must address the historical context
@@ -216,6 +268,9 @@ Framework-Specific Requirements:
    - Must emphasize prophetic refinement
    - Must connect to dimensional shifts
    - Must integrate harmonic alignment
+   - Must show recursive feedback
+   - Must demonstrate dimensional mapping
+   - Must illustrate truth refinement
 
    Third Point:
    - Must address the Christic pattern
@@ -232,6 +287,9 @@ Framework-Specific Requirements:
    - Must emphasize convergence
    - Must connect to resonance fields
    - Must integrate dimensional shifts
+   - Must show recursive feedback
+   - Must demonstrate dimensional mapping
+   - Must illustrate truth refinement
 
    Summary:
    - Must be in framework's voice
@@ -248,6 +306,9 @@ Framework-Specific Requirements:
    - Must highlight prophetic refinement
    - Must emphasize convergence
    - Must connect to harmonic alignment
+   - Must show recursive feedback
+   - Must demonstrate dimensional mapping
+   - Must illustrate truth refinement
 
 6. Format-Specific Requirements:
    - No numbered lists (use ### and * instead)
