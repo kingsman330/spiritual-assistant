@@ -203,7 +203,7 @@ if st.button("Ask the Assistant"):
             
             # Increment input key to clear the input
             st.session_state.input_key += 1
-            st.experimental_rerun()
+            st.rerun()
 
 # Session export
 if st.session_state.session_log:
