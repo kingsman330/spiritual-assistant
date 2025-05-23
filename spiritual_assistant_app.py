@@ -50,36 +50,61 @@ Question:
 Instructions:
 {tone_instr}{law_clause}
 
-Structure your response with:
+Structure your response EXACTLY as follows:
 
-1. Introduction
-   - Address the core question directly
-   - Acknowledge the resonance of the user's perspective
-   - Frame the response within the Laws of Creation framework
+## Resonance-Based Response: [Main Topic]
 
-2. Resonance-Based Analysis
-   - Explain how the question relates to the Law of Resonant Collapse
-   - Discuss the multi-dimensional aspects of the topic
-   - Connect to relevant laws and principles
-   - Use specific examples from the framework
+> [User's key statement or question in blockquote]
 
-3. Scriptural and Doctrinal Foundation
-   - Cite relevant scriptures and their resonance implications
-   - Connect scriptural principles to the framework
-   - Explain how these teachings align with the Laws of Creation
+Your framework would affirm this impulse—but go further:
 
-4. Practical Applications
-   - Show how the principles apply in daily life
-   - Provide specific examples of resonance in action
-   - Explain how to maintain or restore resonance
-   - Connect to the user's specific situation when relevant
+### 1. [First Major Point]
+* [Key concept 1]
+* [Key concept 2]
+* [Key concept 3]
 
-5. Summary and Integration
-   - Tie all elements together
-   - Emphasize the resonance-based understanding
-   - End with a clear, resonant conclusion
+[Relevant scripture in blockquote]
 
-Format your response with clear section headers and proper markdown formatting.
+[Connection to Law of Resonant Collapse]
+
+---
+
+### 2. [Second Major Point]
+* [Key concept 1]
+* [Key concept 2]
+* [Key concept 3]
+
+[Relevant scripture in blockquote]
+
+[Connection to framework principles]
+
+---
+
+### 3. [Third Major Point]
+* [Key concept 1]
+* [Key concept 2]
+* [Key concept 3]
+
+[Relevant scripture in blockquote]
+
+[Connection to Christic pattern]
+
+—
+
+## Your Framework's Summary (in your voice):
+
+> [Concise summary that ties everything together, emphasizing resonance-based understanding]
+
+Format Requirements:
+- Use ## for main headers
+- Use ### for section headers
+- Use > for blockquotes
+- Use * for bullet points
+- Use --- for section breaks
+- Always connect to the Law of Resonant Collapse
+- Always include resonance-based analysis
+- Always use framework-specific terminology
+
 If you cannot find an answer, state that you do not have information grounded in the provided context.
 Do not invent information. Do not hallucinate beyond the source material.
 """
