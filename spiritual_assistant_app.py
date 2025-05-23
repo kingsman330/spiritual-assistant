@@ -177,7 +177,6 @@ Framework-Specific Requirements:
    - Must use ### for section header
    - Must use * for bullet points
    - Must use > for scripture
-   - Must use exact header: "1. Children are not 'exceptions.' They are the rule."
    - Must have exactly 3 bullet points
    - Must have scripture explanation
 
@@ -190,7 +189,6 @@ Framework-Specific Requirements:
    - Must use ### for section header
    - Must use * for bullet points
    - Must use > for scripture
-   - Must use exact header: "2. Original Sin = Collapsed Theology"
    - Must have exactly 3 bullet points
    - Must have scripture explanation
 
@@ -203,7 +201,6 @@ Framework-Specific Requirements:
    - Must use ### for section header
    - Must use * for bullet points
    - Must use > for scripture
-   - Must use exact header: "3. Children and the Christic Pattern"
    - Must have exactly 3 bullet points
    - Must have scripture explanation
 
