@@ -49,6 +49,14 @@ Question:
 
 Instructions:
 {tone_instr}{law_clause}
+
+Structure your response with:
+1. A clear introduction that addresses the core question
+2. Relevant laws and principles from the framework
+3. Scriptural or doctrinal references when applicable
+4. Practical applications or examples
+5. A concise summary that ties everything together
+
 If you cannot find an answer, state that you do not have information grounded in the provided context.
 Do not invent information. Do not hallucinate beyond the source material.
 """
@@ -108,24 +116,65 @@ st.markdown("""
         font-size: 16px;
     }
     .response-box {
-        background-color: #f0f2f6;
+        background-color: #f8f9fa;
         padding: 20px;
         border-radius: 10px;
         margin: 10px 0;
+        border-left: 4px solid #4a90e2;
     }
     .user-question {
         font-weight: 500;
         color: #1f1f1f;
         margin-bottom: 10px;
+        padding: 10px;
+        background-color: #f0f2f6;
+        border-radius: 8px;
     }
     .assistant-response {
         color: #1f1f1f;
         line-height: 1.6;
     }
+    .assistant-response h2 {
+        color: #2c3e50;
+        border-bottom: 2px solid #e0e0e0;
+        padding-bottom: 8px;
+        margin-top: 20px;
+    }
+    .assistant-response h3 {
+        color: #34495e;
+        margin-top: 15px;
+    }
+    .assistant-response blockquote {
+        border-left: 4px solid #4a90e2;
+        padding-left: 15px;
+        margin: 15px 0;
+        color: #555;
+        font-style: italic;
+    }
+    .assistant-response ul {
+        margin: 10px 0;
+        padding-left: 20px;
+    }
+    .assistant-response li {
+        margin: 5px 0;
+    }
+    .scripture-reference {
+        color: #666;
+        font-size: 0.9em;
+        font-style: italic;
+        margin-top: 5px;
+    }
     .resonance-section {
         margin-top: 15px;
         padding-top: 15px;
         border-top: 1px solid #e0e0e0;
+    }
+    .summary-box {
+        background-color: #fffbe6;
+        border-left: 6px solid #f7c873;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 4px;
     }
 </style>
 """, unsafe_allow_html=True)
