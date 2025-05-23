@@ -130,17 +130,17 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# For session logging
+# For session logging and chat history
 if "session_log" not in st.session_state:
     st.session_state.session_log = []
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = []
+if "input_key" not in st.session_state:
+    st.session_state.input_key = 0
 
 # Main chat interface
 st.title("Spiritual Assistant")
 st.markdown("_A sacred space for spiritual inquiry and growth_")
-
-# Chat history display
-if "chat_history" not in st.session_state:
-    st.session_state.chat_history = []
 
 # Display chat history
 for message in st.session_state.chat_history:
@@ -161,7 +161,7 @@ for message in st.session_state.chat_history:
         """, unsafe_allow_html=True)
 
 # Input area
-question = st.text_area("What is your spiritual question?", height=80, key="question_input")
+question = st.text_area("What is your spiritual question?", height=80, key=f"question_input_{st.session_state.input_key}")
 tone = st.selectbox(
     "Choose a response tone:",
     list(PROMPT_TEMPLATES.keys()),
@@ -191,10 +191,18 @@ if st.button("Ask the Assistant"):
                 "content": answer
             })
             
-            # Clear the input
-            st.session_state.question_input = ""
+            # Log session entry
+            session_entry = {
+                "timestamp": datetime.utcnow().isoformat(),
+                "question": question,
+                "tone": tone,
+                "answer": answer,
+                "resonance": "Not Rated"  # Default value
+            }
+            st.session_state.session_log.append(session_entry)
             
-            # Force a rerun to update the display
+            # Increment input key to clear the input
+            st.session_state.input_key += 1
             st.experimental_rerun()
 
 # Session export
