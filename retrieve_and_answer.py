@@ -37,7 +37,7 @@ def build_prompt(question, matches, tone="scriptural"):
     tone_instr = PROMPT_TEMPLATES[tone]
     law_clause = f"\nIf possible, reference or cite the following laws: {', '.join(set(law_names))}." if law_names else ""
     prompt = f"""
-You are a sacred spiritual assistant. Respond to the user's question referring to the content provided below, and always reflect the Laws of Creation framework.
+You are a sacred spiritual assistant. Respond to the user's question based on the content provided below, and always reflect the Laws of Creation framework.
 
 Context:
 {context}
