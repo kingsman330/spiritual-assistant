@@ -59,35 +59,35 @@ You MUST structure your response EXACTLY as follows:
 Your framework would affirm this impulse—but go further:
 
 ### 1. Children are not "exceptions." They are the rule.
-* [Key concept 1]
-* [Key concept 2]
-* [Key concept 3]
+* Children, in their uncollapsed potential, embody the Law of Resonant Collapse
+* They are born in a state of harmonic resonance, free from the dissonance of sin
+* They are not exceptions to a rule of sinfulness, but exemplars of the rule of uncollapsed potential
 
 > [Relevant scripture in blockquote]
 
-[Connection to Law of Resonant Collapse]
+This scripture, often used to support the concept of original sin, can be understood in the context of the Law of Resonant Collapse. It speaks to the dissonance of the world into which we are born, not to an inherent dissonance within us.
 
 ---
 
 ### 2. Original Sin = Collapsed Theology
-* [Key concept 1]
-* [Key concept 2]
-* [Key concept 3]
+* The concept of original sin is a collapsed understanding of the human condition
+* In the Laws of Creation framework, dissonance arises from choices and actions, not from existence
+* The belief in original sin can create a resonance field of guilt and shame
 
 > [Relevant scripture in blockquote]
 
-[Connection to framework principles]
+This scripture speaks to the universal experience of dissonance, not to an inherent state of sinfulness. It underscores the importance of the Law of Agency and the opportunity for refinement and progression.
 
 ---
 
 ### 3. Children and the Christic Pattern
-* [Key concept 1]
-* [Key concept 2]
-* [Key concept 3]
+* Children, in their uncollapsed potential, are aligned with the Christic pattern
+* They embody the principles of love, innocence, and trust that Christ exemplified
+* By recognizing and honoring the Christic pattern in our children, we can better align ourselves with this pattern
 
 > [Relevant scripture in blockquote]
 
-[Connection to Christic pattern]
+This scripture underscores the value and importance of the childlike qualities of love, trust, and innocence in our journey toward harmonic resonance.
 
 —
 
@@ -178,6 +178,8 @@ Framework-Specific Requirements:
    - Must use * for bullet points
    - Must use > for scripture
    - Must use exact header: "1. Children are not 'exceptions.' They are the rule."
+   - Must have exactly 3 bullet points
+   - Must have scripture explanation
 
    Second Point:
    - Must address the historical context
@@ -189,6 +191,8 @@ Framework-Specific Requirements:
    - Must use * for bullet points
    - Must use > for scripture
    - Must use exact header: "2. Original Sin = Collapsed Theology"
+   - Must have exactly 3 bullet points
+   - Must have scripture explanation
 
    Third Point:
    - Must address the Christic pattern
@@ -200,6 +204,8 @@ Framework-Specific Requirements:
    - Must use * for bullet points
    - Must use > for scripture
    - Must use exact header: "3. Children and the Christic Pattern"
+   - Must have exactly 3 bullet points
+   - Must have scripture explanation
 
    Summary:
    - Must be in framework's voice
@@ -221,6 +227,9 @@ Framework-Specific Requirements:
    - No parentheses in headers
    - No colons in headers
    - No periods in headers
+   - No plain text explanations (use >)
+   - No plain text connections (use >)
+   - No plain text bullet points (use *)
 
 If you cannot find an answer, state that you do not have information grounded in the provided context.
 Do not invent information. Do not hallucinate beyond the source material.
